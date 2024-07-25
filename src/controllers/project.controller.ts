@@ -5,7 +5,7 @@ import { IProject } from '../types';
 import { v4 as uuidv4 } from 'uuid';
 
 export const createProject = async (req: Request, res: Response) => {
-	const data: { name?: string; description?: string } = req.body;
+	const data: IProject = req.body;
 	const id = uuidv4();
 
 	if (!data.name) {
@@ -64,6 +64,44 @@ export const getProjectById = async (req: Request, res: Response) => {
 				message: 'Project found',
 			});
 		}
+		return CustomResponse.notFound(res, { message: 'Project not found' });
+	} catch (error) {
+		console.error(error);
+		return CustomResponse.badRequest<IProject>(res);
+	}
+};
+
+export const updateProjectById = async (req: Request, res: Response) => {
+	const projectId = req.params.projectId.trim();
+	if (!projectId) {
+		return CustomResponse.badRequest<IProject>(res, {
+			message: 'The project ID is required',
+		});
+	}
+
+	const data: IProject = req.body;
+
+	if (!data.name) {
+		return CustomResponse.badRequest(res, {
+			message: 'Project name is required',
+		});
+	}
+
+	if (!data.description) {
+		return CustomResponse.badRequest(res, {
+			message: 'Project description is required',
+		});
+	}
+
+	try {
+		const project = Project.objects.update(projectId, data);
+		if (project) {
+			return CustomResponse.success<IProject>(res, {
+				data: project,
+				message: 'Project found',
+			});
+		}
+
 		return CustomResponse.notFound(res, { message: 'Project not found' });
 	} catch (error) {
 		console.error(error);

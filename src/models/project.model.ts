@@ -18,8 +18,25 @@ class ProjectManagement implements ProjectManagement {
 		}
 	}
 
-	update(newValues: IProject) {
-		return newValues;
+	update(projectId: string, newValues: IProject): IProject | null {
+		const project = this.get({ id: projectId });
+		if (!project) {
+			return null;
+		}
+
+		const sql =
+			'UPDATE projects SET name = @name, description = @description WHERE id = @id';
+		try {
+			db.run(sql, {
+				name: newValues.name,
+				description: newValues.description,
+				id: projectId,
+			});
+			newValues.id = projectId;
+			return newValues;
+		} catch {
+			return null;
+		}
 	}
 
 	all(): IProject[] {
