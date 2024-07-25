@@ -2,13 +2,20 @@ import type { IReport, IProject, ProjectManagementGetOptions } from '../types';
 import db from '../services/db.service';
 
 class ProjectManagement implements ProjectManagement {
-	create(): IProject {
-		return {
-			id: '',
-			description: '',
-			name: '',
-			reports: [],
-		};
+	create(values: IProject): IProject | null {
+		try {
+			const sql =
+				'INSERT INTO projects (id, name, description) VALUES (@id, @name, @description)';
+			db.run(sql, {
+				id: values.id,
+				name: values.name,
+				description: values.description,
+			});
+
+			return values as unknown as IProject;
+		} catch {
+			return null;
+		}
 	}
 
 	update(newValues: IProject) {

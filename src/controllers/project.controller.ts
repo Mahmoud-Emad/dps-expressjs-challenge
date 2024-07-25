@@ -2,6 +2,44 @@ import { Request, Response } from 'express';
 import Project from '../models/project.model';
 import CustomResponse from '../api/response';
 import { IProject } from '../types';
+import { v4 as uuidv4 } from 'uuid';
+
+export const createProject = async (req: Request, res: Response) => {
+	const data: { name?: string; description?: string } = req.body;
+	const id = uuidv4();
+
+	if (!data.name) {
+		return CustomResponse.badRequest(res, {
+			message: 'Project name is required',
+		});
+	}
+
+	if (!data.description) {
+		return CustomResponse.badRequest(res, {
+			message: 'Project description is required',
+		});
+	}
+
+	const project = Project.objects.create({
+		id: id,
+		name: data.name,
+		description: data.description,
+		reports: [],
+	});
+
+	if (project) {
+		// Can handle the error by catching it and then forwarding it to the user.
+		return CustomResponse.success(res, {
+			message: 'Project created successfully',
+			status: 201,
+			data: project,
+		});
+	}
+
+	return CustomResponse.badRequest<IProject>(res, {
+		message: 'Please make sure that you entered a valid data',
+	});
+};
 
 export const getProjects = async (req: Request, res: Response) => {
 	const projects = Project.objects.all();
