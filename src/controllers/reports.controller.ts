@@ -42,3 +42,10 @@ export const createReport = async (req: Request, res: Response) => {
 		message: 'Please make sure that you entered a valid data',
 	});
 };
+
+export const getReports = async (req: Request, res: Response) => {
+	const reports = Report.objects.all();
+	return CustomResponse.success<IReport[]>(res, {
+		data: reports,
+	});
+};

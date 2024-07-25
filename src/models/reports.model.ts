@@ -13,8 +13,9 @@ class ReportManagement implements IReportManagement {
 		return null;
 	}
 
-	all() {
-		return [];
+	all(): IReport[] {
+		const reports = db.query('SELECT * FROM reports;') as IReport[];
+		return reports || [];
 	}
 
 	create(values: IReport): IReport | null {
