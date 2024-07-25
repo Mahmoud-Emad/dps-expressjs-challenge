@@ -108,3 +108,27 @@ export const updateProjectById = async (req: Request, res: Response) => {
 		return CustomResponse.badRequest<IProject>(res);
 	}
 };
+
+export const deleteProjectById = async (req: Request, res: Response) => {
+	const projectId = req.params.projectId.trim();
+	if (!projectId) {
+		return CustomResponse.badRequest<IProject>(res, {
+			message: 'The project ID is required',
+		});
+	}
+
+	try {
+		const project = Project.objects.delete(projectId);
+		if (project) {
+			return CustomResponse.success<IProject>(res, {
+				message: 'Project deleted',
+				status: 204,
+			});
+		}
+
+		return CustomResponse.notFound(res, { message: 'Project not found' });
+	} catch (error) {
+		console.error(error);
+		return CustomResponse.badRequest<IProject>(res);
+	}
+};

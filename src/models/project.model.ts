@@ -39,6 +39,29 @@ class ProjectManagement implements ProjectManagement {
 		}
 	}
 
+	delete(projectId: string): string | null {
+		const project = this.get({ id: projectId });
+		if (!project) {
+			return null;
+		}
+
+		const dReportsSql = 'DELETE FROM reports WHERE projectid = @id';
+		const dProjectSql = 'DELETE FROM projects WHERE id = @id';
+
+		try {
+			db.run(dReportsSql, {
+				id: projectId,
+			});
+
+			db.run(dProjectSql, {
+				id: projectId,
+			});
+			return projectId;
+		} catch {
+			return null;
+		}
+	}
+
 	all(): IProject[] {
 		const projects = db.query('SELECT * FROM projects;') as IProject[];
 		return projects || [];
