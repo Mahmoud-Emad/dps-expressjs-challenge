@@ -1,23 +1,7 @@
 import type { IReport, IProject, ProjectManagementGetOptions } from '../types';
+import db from '../services/db.service';
 
-class Project {
-	protected id: string;
-	protected name: string;
-	protected description: string;
-	protected reports?: IReport[];
-
-	objects: ProjectManagement;
-
-	constructor(meta: IProject) {
-		this.id = meta.id;
-		this.name = meta.name;
-		this.description = meta.description;
-		this.reports = meta.reports;
-		this.objects = new ProjectManagement(meta);
-	}
-}
-
-class ProjectManagement extends Project implements ProjectManagement {
+class ProjectManagement implements ProjectManagement {
 	create(): IProject {
 		return {
 			id: '',
@@ -32,7 +16,8 @@ class ProjectManagement extends Project implements ProjectManagement {
 	}
 
 	all(): IProject[] {
-		return [];
+		const projects = db.query('SELECT * FROM projects;') as IProject[];
+		return projects || [];
 	}
 
 	get(options: ProjectManagementGetOptions): IProject {
@@ -43,6 +28,22 @@ class ProjectManagement extends Project implements ProjectManagement {
 			name: '',
 			reports: [],
 		};
+	}
+}
+
+class Project {
+	protected id: string;
+	protected name: string;
+	protected description: string;
+	protected reports?: IReport[];
+
+	static objects = new ProjectManagement();
+
+	constructor(meta: IProject) {
+		this.id = meta.id;
+		this.name = meta.name;
+		this.description = meta.description;
+		this.reports = meta.reports;
 	}
 }
 
