@@ -2,11 +2,9 @@ import { Request, Response } from 'express';
 import Project from '../models/project.model';
 import CustomResponse from '../api/response';
 import { IProject } from '../types';
-import { v4 as uuidv4 } from 'uuid';
 
 export const createProject = async (req: Request, res: Response) => {
 	const data: IProject = req.body;
-	const id = uuidv4();
 
 	if (!data.name) {
 		return CustomResponse.badRequest(res, {
@@ -21,7 +19,6 @@ export const createProject = async (req: Request, res: Response) => {
 	}
 
 	const project = Project.objects.create({
-		id: id,
 		name: data.name,
 		description: data.description,
 		reports: [],

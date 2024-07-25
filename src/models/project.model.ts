@@ -1,13 +1,19 @@
-import type { IReport, IProject, ProjectManagementGetOptions } from '../types';
+import type {
+	IProject,
+	ProjectManagementGetOptions,
+	IProjectManagement,
+} from '../types';
 import db from '../services/db.service';
+import { v4 as uuidv4 } from 'uuid';
 
-class ProjectManagement implements ProjectManagement {
+class ProjectManagement implements IProjectManagement {
 	create(values: IProject): IProject | null {
+		const id = uuidv4();
 		try {
 			const sql =
 				'INSERT INTO projects (id, name, description) VALUES (@id, @name, @description)';
 			db.run(sql, {
-				id: values.id,
+				id: id,
 				name: values.name,
 				description: values.description,
 			});
@@ -81,19 +87,7 @@ class ProjectManagement implements ProjectManagement {
 }
 
 class Project {
-	protected id: string;
-	protected name: string;
-	protected description: string;
-	protected reports?: IReport[];
-
 	static objects = new ProjectManagement();
-
-	constructor(meta: IProject) {
-		this.id = meta.id;
-		this.name = meta.name;
-		this.description = meta.description;
-		this.reports = meta.reports;
-	}
 }
 
 export default Project;
