@@ -12,9 +12,23 @@ export const getProjects = async (req: Request, res: Response) => {
 
 export const getProjectById = async (req: Request, res: Response) => {
 	const projectId = req.params.projectId.trim();
-	const project = Project.objects.get({ id: projectId });
+	if (!projectId) {
+		return CustomResponse.badRequest<IProject>(res, {
+			message: 'The project ID is required',
+		});
+	}
 
-	return CustomResponse.success<IProject>(res, {
-		data: project,
-	});
+	try {
+		const project = Project.objects.get({ id: projectId });
+		if (project) {
+			return CustomResponse.success<IProject>(res, {
+				data: project,
+				message: 'Project found',
+			});
+		}
+		return CustomResponse.notFound(res, { message: 'Project not found' });
+	} catch (error) {
+		console.error(error);
+		return CustomResponse.badRequest<IProject>(res);
+	}
 };

@@ -20,14 +20,16 @@ class ProjectManagement implements ProjectManagement {
 		return projects || [];
 	}
 
-	get(options: ProjectManagementGetOptions): IProject {
-		console.log(options);
-		return {
-			id: '',
-			description: '',
-			name: '',
-			reports: [],
-		};
+	get(options: ProjectManagementGetOptions): IProject | null {
+		const result = db.query('SELECT * FROM projects WHERE id=@id', {
+			id: options.id,
+		});
+
+		if (!result.length) {
+			return null;
+		}
+
+		return result as unknown as IProject;
 	}
 }
 
