@@ -1,12 +1,23 @@
-export type ReportType = {
+export interface IReport {
 	id: string;
 	text: string;
 	projectid: string;
-};
+}
 
-export type ProjectType = {
+export interface IProject {
 	id: string;
 	name: string;
 	description: string;
-	reports?: ReportType[];
-};
+	reports?: IReport[];
+}
+
+export interface ProjectManagementGetOptions {
+	id: string;
+}
+
+export interface ProjectManagement {
+	create: () => IProject;
+	all: () => IProject[];
+	update: (newValues: IProject) => IProject;
+	get: (options: ProjectManagementGetOptions) => IProject;
+}
