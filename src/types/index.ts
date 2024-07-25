@@ -21,3 +21,9 @@ export interface ProjectManagement {
 	update: (newValues: IProject) => IProject;
 	get: (options: ProjectManagementGetOptions) => IProject;
 }
+
+export interface IResponse<T> {
+	message?: string;
+	status?: number;
+	data: T;
+}
