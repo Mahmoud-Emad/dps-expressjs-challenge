@@ -6,21 +6,21 @@ class CustomResponse {
 		return res.json({
 			message: options.message || 'Not Found',
 			status: options.status || 404,
-			data: options.data,
+			data: options.data || {},
 		}) as unknown as IResponse<T>;
 	}
 	static success<T>(res: Response, options: IResponse<T>): IResponse<T> {
 		return res.json({
 			message: options.message || 'Success',
 			status: options.status || 200,
-			data: options.data,
+			data: options.data || {},
 		}) as unknown as IResponse<T>;
 	}
 	static unauthorized<T>(res: Response, options: IResponse<T>): IResponse<T> {
 		return res.json({
 			message: options.message || 'Unauthorized',
 			status: options.status || 401,
-			data: options.data,
+			data: options.data || {},
 		}) as unknown as IResponse<T>;
 	}
 }

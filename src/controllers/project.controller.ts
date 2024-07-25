@@ -9,3 +9,12 @@ export const getProjects = async (req: Request, res: Response) => {
 		data: projects,
 	});
 };
+
+export const getProjectById = async (req: Request, res: Response) => {
+	const projectId = req.params.projectId.trim();
+	const project = Project.objects.get({ id: projectId });
+
+	return CustomResponse.success<IProject>(res, {
+		data: project,
+	});
+};
