@@ -70,3 +70,9 @@ You should only use it to customize the variables without changing the code base
 AUTH_TOKEN=<the_auth_token>
 PORT=<server_port>
 ```
+
+### How to run tests
+
+```sh
+npm run test
+```
