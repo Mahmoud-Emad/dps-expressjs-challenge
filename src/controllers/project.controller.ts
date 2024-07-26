@@ -94,8 +94,9 @@ export const updateProjectById = async (req: Request, res: Response) => {
 		const project = Project.objects.update(projectId, data);
 		if (project) {
 			return CustomResponse.success<IProject>(res, {
-				data: project,
 				message: 'Project updated',
+				status: 202,
+				data: project,
 			});
 		}
 

@@ -101,8 +101,9 @@ export const updateReportById = async (req: Request, res: Response) => {
 		const report = Report.objects.update(reportId, data);
 		if (report) {
 			return CustomResponse.success<IReport>(res, {
-				data: report,
 				message: 'Report updated',
+				status: 202,
+				data: report,
 			});
 		}
 
