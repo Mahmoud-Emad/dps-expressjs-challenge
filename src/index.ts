@@ -14,6 +14,8 @@ app.use(authMiddleware);
 app.use('/projects', projectRoutes);
 app.use('/reports', reportRoutes);
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
 	console.log(`[server]: Server is running at http://localhost:${port}`);
 });
+
+export default server;
