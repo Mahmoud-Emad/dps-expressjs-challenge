@@ -1,4 +1,9 @@
-import type { IProject, GetByIdOptions, IProjectManagement } from '../types';
+import type {
+	IProject,
+	GetByIdOptions,
+	IProjectManagement,
+	IReport,
+} from '../types';
 import db from '../services/db.service';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -70,15 +75,27 @@ class ProjectManagement implements IProjectManagement {
 	}
 
 	get(options: GetByIdOptions): IProject | null {
-		const result = db.query('SELECT * FROM projects WHERE id=@id', {
+		const reportsResult = db.query(
+			'SELECT * FROM reports WHERE projectid = @id',
+			{
+				id: options.id,
+			},
+		);
+
+		const projectResult = db.query('SELECT * FROM projects WHERE id=@id', {
 			id: options.id,
 		});
 
-		if (!result.length) {
+		if (!projectResult.length) {
 			return null;
 		}
 
-		return result[0] as unknown as IProject;
+		const project = projectResult[0] as unknown as IProject;
+		const reports = (reportsResult as unknown as IReport[]) || [];
+
+		project.reports = reports;
+
+		return project;
 	}
 }
 
