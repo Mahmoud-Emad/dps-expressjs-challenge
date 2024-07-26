@@ -76,3 +76,10 @@ PORT=<server_port>
 ```sh
 npm run test
 ```
+
+### How to run Docker
+
+```sh
+docker build -t express_app .
+docker run express_app
+```
