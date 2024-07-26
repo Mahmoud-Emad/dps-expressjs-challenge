@@ -18,6 +18,7 @@ export interface GetByIdOptions {
 export interface IProjectManagement {
 	create: (values: IProject) => IProject | null;
 	update: (projectId: string, newValues: IProject) => IProject | null;
+	delete: (projectId: string) => string | null;
 	get: (options: GetByIdOptions) => IProject | null;
 	all: () => IProject[];
 }
@@ -25,6 +26,7 @@ export interface IProjectManagement {
 export interface IReportManagement {
 	create: (values: IReport) => IReport | null;
 	update: (projectId: string, newValues: IReport) => IReport | null;
+	delete: (reportId: string) => string | null;
 	get: (options: GetByIdOptions) => IReport | null;
 	all: () => IReport[];
 }

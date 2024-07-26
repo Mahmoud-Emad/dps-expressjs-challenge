@@ -13,6 +13,11 @@ class ReportManagement implements IReportManagement {
 		return null;
 	}
 
+	delete(reportId: string) {
+		console.log(reportId);
+		return null;
+	}
+
 	all(): IReport[] {
 		const reports = db.query('SELECT * FROM reports;') as IReport[];
 		return reports || [];
