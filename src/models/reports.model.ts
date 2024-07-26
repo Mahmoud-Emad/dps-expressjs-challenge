@@ -66,7 +66,7 @@ class ReportManagement implements IReportManagement {
 			const sql =
 				'INSERT INTO reports (id, projectid, text) VALUES (@id, @projectid, @text)';
 			db.run(sql, { id, projectid: values.projectid, text: values.text });
-
+			values.id = id;
 			return values as unknown as IReport;
 		} catch {
 			return null;

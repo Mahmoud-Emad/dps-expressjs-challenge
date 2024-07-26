@@ -18,7 +18,7 @@ class ProjectManagement implements IProjectManagement {
 				name: values.name,
 				description: values.description,
 			});
-
+			values.id = id;
 			return values as unknown as IProject;
 		} catch {
 			return null;
