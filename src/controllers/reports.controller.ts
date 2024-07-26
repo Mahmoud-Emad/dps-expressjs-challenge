@@ -73,6 +73,44 @@ export const getReportById = async (req: Request, res: Response) => {
 	}
 };
 
+export const updateReportById = async (req: Request, res: Response) => {
+	const reportId = req.params.reportId.trim();
+	if (!reportId) {
+		return CustomResponse.badRequest<IReport>(res, {
+			message: 'The Report ID is required',
+		});
+	}
+
+	const data: IReport = req.body;
+
+	if (!data.text) {
+		return CustomResponse.badRequest(res, {
+			message: 'Report text is required',
+		});
+	}
+
+	if (!data.projectid) {
+		return CustomResponse.badRequest(res, {
+			message: 'Project ID is required',
+		});
+	}
+
+	try {
+		const report = Report.objects.update(reportId, data);
+		if (report) {
+			return CustomResponse.success<IReport>(res, {
+				data: report,
+				message: 'Report updated',
+			});
+		}
+
+		return CustomResponse.notFound(res, { message: 'Report not found' });
+	} catch (error) {
+		console.error(error);
+		return CustomResponse.badRequest<IReport>(res);
+	}
+};
+
 export const deleteReportById = async (req: Request, res: Response) => {
 	const reportId = req.params.reportId.trim();
 	if (!reportId) {

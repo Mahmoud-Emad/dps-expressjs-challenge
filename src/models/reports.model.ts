@@ -3,12 +3,28 @@ import db from '../services/db.service';
 import { v4 as uuidv4 } from 'uuid';
 
 class ReportManagement implements IReportManagement {
-	update(projectId: string, newValues: IReport) {
-		console.log(projectId, newValues);
-		return null;
+	update(reportId: string, newValues: IReport): IReport | null {
+		const report = this.get({ id: reportId });
+		if (!report) {
+			return null;
+		}
+
+		const sql =
+			'UPDATE reports SET text = @text, projectid = @projectid WHERE id = @id';
+		try {
+			db.run(sql, {
+				text: newValues.text,
+				projectid: newValues.projectid,
+				id: reportId,
+			});
+			newValues.id = reportId;
+			return newValues;
+		} catch {
+			return null;
+		}
 	}
 
-	get(options: GetByIdOptions) {
+	get(options: GetByIdOptions): IReport | null {
 		const result = db.query('SELECT * FROM reports WHERE id=@id', {
 			id: options.id,
 		});
@@ -20,7 +36,7 @@ class ReportManagement implements IReportManagement {
 		return result[0] as unknown as IReport;
 	}
 
-	delete(reportId: string) {
+	delete(reportId: string): string | null {
 		const report = this.get({ id: reportId });
 		if (!report) {
 			return null;
