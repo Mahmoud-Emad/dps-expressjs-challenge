@@ -31,14 +31,14 @@ export const createReport = async (req: Request, res: Response) => {
 
 	if (report) {
 		// Can handle the error by catching it and then forwarding it to the user.
-		return CustomResponse.success(res, {
+		return CustomResponse.success<IReport>(res, {
 			message: 'Report created successfully',
 			status: 201,
 			data: report,
 		});
 	}
 
-	return CustomResponse.badRequest<IReport>(res, {
+	return CustomResponse.badRequest(res, {
 		message: 'Please make sure that you entered a valid data',
 	});
 };
@@ -53,7 +53,7 @@ export const getReports = async (req: Request, res: Response) => {
 export const getReportById = async (req: Request, res: Response) => {
 	const reportId = req.params.reportId.trim();
 	if (!reportId) {
-		return CustomResponse.badRequest<IReport>(res, {
+		return CustomResponse.badRequest(res, {
 			message: 'The report ID is required',
 		});
 	}
@@ -69,14 +69,14 @@ export const getReportById = async (req: Request, res: Response) => {
 		return CustomResponse.notFound(res, { message: 'Report not found' });
 	} catch (error) {
 		console.error(error);
-		return CustomResponse.badRequest<IReport>(res);
+		return CustomResponse.badRequest(res);
 	}
 };
 
 export const updateReportById = async (req: Request, res: Response) => {
 	const reportId = req.params.reportId.trim();
 	if (!reportId) {
-		return CustomResponse.badRequest<IReport>(res, {
+		return CustomResponse.badRequest(res, {
 			message: 'The Report ID is required',
 		});
 	}
@@ -107,14 +107,14 @@ export const updateReportById = async (req: Request, res: Response) => {
 		return CustomResponse.notFound(res, { message: 'Report not found' });
 	} catch (error) {
 		console.error(error);
-		return CustomResponse.badRequest<IReport>(res);
+		return CustomResponse.badRequest(res);
 	}
 };
 
 export const deleteReportById = async (req: Request, res: Response) => {
 	const reportId = req.params.reportId.trim();
 	if (!reportId) {
-		return CustomResponse.badRequest<IReport>(res, {
+		return CustomResponse.badRequest(res, {
 			message: 'The report ID is required',
 		});
 	}
@@ -131,6 +131,6 @@ export const deleteReportById = async (req: Request, res: Response) => {
 		return CustomResponse.notFound(res, { message: 'Report not found' });
 	} catch (error) {
 		console.error(error);
-		return CustomResponse.badRequest<IReport>(res);
+		return CustomResponse.badRequest(res);
 	}
 };

@@ -26,14 +26,14 @@ export const createProject = async (req: Request, res: Response) => {
 
 	if (project) {
 		// Can handle the error by catching it and then forwarding it to the user.
-		return CustomResponse.success(res, {
+		return CustomResponse.success<IProject>(res, {
 			message: 'Project created successfully',
 			status: 201,
 			data: project,
 		});
 	}
 
-	return CustomResponse.badRequest<IProject>(res, {
+	return CustomResponse.badRequest(res, {
 		message: 'Please make sure that you entered a valid data',
 	});
 };
@@ -48,7 +48,7 @@ export const getProjects = async (req: Request, res: Response) => {
 export const getProjectById = async (req: Request, res: Response) => {
 	const projectId = req.params.projectId.trim();
 	if (!projectId) {
-		return CustomResponse.badRequest<IProject>(res, {
+		return CustomResponse.badRequest(res, {
 			message: 'The project ID is required',
 		});
 	}
@@ -64,14 +64,14 @@ export const getProjectById = async (req: Request, res: Response) => {
 		return CustomResponse.notFound(res, { message: 'Project not found' });
 	} catch (error) {
 		console.error(error);
-		return CustomResponse.badRequest<IProject>(res);
+		return CustomResponse.badRequest(res);
 	}
 };
 
 export const updateProjectById = async (req: Request, res: Response) => {
 	const projectId = req.params.projectId.trim();
 	if (!projectId) {
-		return CustomResponse.badRequest<IProject>(res, {
+		return CustomResponse.badRequest(res, {
 			message: 'The project ID is required',
 		});
 	}
@@ -95,21 +95,21 @@ export const updateProjectById = async (req: Request, res: Response) => {
 		if (project) {
 			return CustomResponse.success<IProject>(res, {
 				data: project,
-				message: 'Project found',
+				message: 'Project updated',
 			});
 		}
 
 		return CustomResponse.notFound(res, { message: 'Project not found' });
 	} catch (error) {
 		console.error(error);
-		return CustomResponse.badRequest<IProject>(res);
+		return CustomResponse.badRequest(res);
 	}
 };
 
 export const deleteProjectById = async (req: Request, res: Response) => {
 	const projectId = req.params.projectId.trim();
 	if (!projectId) {
-		return CustomResponse.badRequest<IProject>(res, {
+		return CustomResponse.badRequest(res, {
 			message: 'The project ID is required',
 		});
 	}
@@ -126,6 +126,6 @@ export const deleteProjectById = async (req: Request, res: Response) => {
 		return CustomResponse.notFound(res, { message: 'Project not found' });
 	} catch (error) {
 		console.error(error);
-		return CustomResponse.badRequest<IProject>(res);
+		return CustomResponse.badRequest(res);
 	}
 };
