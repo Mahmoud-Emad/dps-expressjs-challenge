@@ -78,7 +78,7 @@ class ProjectManagement implements IProjectManagement {
 			return null;
 		}
 
-		return result as unknown as IProject;
+		return result[0] as unknown as IProject;
 	}
 }
 

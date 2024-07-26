@@ -9,8 +9,15 @@ class ReportManagement implements IReportManagement {
 	}
 
 	get(options: GetByIdOptions) {
-		console.log(options);
-		return null;
+		const result = db.query('SELECT * FROM reports WHERE id=@id', {
+			id: options.id,
+		});
+
+		if (!result.length) {
+			return null;
+		}
+
+		return result[0] as unknown as IReport;
 	}
 
 	delete(reportId: string) {

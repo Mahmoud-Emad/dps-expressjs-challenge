@@ -49,3 +49,26 @@ export const getReports = async (req: Request, res: Response) => {
 		data: reports,
 	});
 };
+
+export const getReportById = async (req: Request, res: Response) => {
+	const reportId = req.params.reportId.trim();
+	if (!reportId) {
+		return CustomResponse.badRequest<IReport>(res, {
+			message: 'The report ID is required',
+		});
+	}
+
+	try {
+		const report = Report.objects.get({ id: reportId });
+		if (report) {
+			return CustomResponse.success<IReport>(res, {
+				data: report,
+				message: 'Report found',
+			});
+		}
+		return CustomResponse.notFound(res, { message: 'Report not found' });
+	} catch (error) {
+		console.error(error);
+		return CustomResponse.badRequest<IReport>(res);
+	}
+};
