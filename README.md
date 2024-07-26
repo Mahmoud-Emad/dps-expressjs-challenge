@@ -40,3 +40,33 @@ NOTE: You can use ([db.service.ts](./src/services/db.service.ts)) to handle SQL 
 
 \
 Happy coding!
+
+
+## Implementation
+
+### API Endpoints
+
+- Projects
+    - Create `/projcts`
+    - Get all `/projcts`
+    - Get project `/projcts/:projectId/`
+    - Update project `/projcts/:projectId/`
+    - Delete project `/projcts/:projectId/`
+- Reports
+    - Create `/reports`
+    - Get all `/reports`
+    - Retrieves all reports where the same word appears at least three times `/frequent-words`
+    - Get project `/reports/:reportId/`
+    - Update project `/reports/:reportId/`
+    - Delete project `/reports/:reportId/`
+
+### Environment
+
+Copy this content and paste it into a `.env` file in the same directory if you wish to change the default values.\
+Please note that these fields are optional, and if they are not set, the server will run with the default values.\
+You should only use it to customize the variables without changing the code base.
+
+```INI
+AUTH_TOKEN=<the_auth_token>
+PORT=<server_port>
+```
