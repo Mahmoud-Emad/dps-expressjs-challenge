@@ -3,6 +3,7 @@ import Report from '../models/reports.model';
 import CustomResponse from '../api/response';
 import { IReport } from '../types';
 import Project from '../models/project.model';
+import { wordCountThreeTimes } from '../utils/wordCount.util';
 
 export const createReport = async (req: Request, res: Response) => {
 	const data: IReport = req.body;
@@ -47,6 +48,7 @@ export const getReports = async (req: Request, res: Response) => {
 	const reports = Report.objects.all();
 	return CustomResponse.success<IReport[]>(res, {
 		data: reports,
+		message: 'Reports retrieved successfully',
 	});
 };
 
@@ -133,4 +135,20 @@ export const deleteReportById = async (req: Request, res: Response) => {
 		console.error(error);
 		return CustomResponse.badRequest(res);
 	}
+};
+
+export const getReportsWithFrequentWords = async (
+	req: Request,
+	res: Response,
+) => {
+	const reports = Report.objects.all();
+
+	const filteredReports = reports.filter((report) =>
+		wordCountThreeTimes(report.text),
+	);
+
+	return CustomResponse.success<IReport[]>(res, {
+		data: filteredReports,
+		message: 'Reports retrieved successfully',
+	});
 };
