@@ -72,3 +72,27 @@ export const getReportById = async (req: Request, res: Response) => {
 		return CustomResponse.badRequest<IReport>(res);
 	}
 };
+
+export const deleteReportById = async (req: Request, res: Response) => {
+	const reportId = req.params.reportId.trim();
+	if (!reportId) {
+		return CustomResponse.badRequest<IReport>(res, {
+			message: 'The report ID is required',
+		});
+	}
+
+	try {
+		const report = Report.objects.delete(reportId);
+		if (report) {
+			return CustomResponse.success<IReport>(res, {
+				message: 'Report deleted',
+				status: 204,
+			});
+		}
+
+		return CustomResponse.notFound(res, { message: 'Report not found' });
+	} catch (error) {
+		console.error(error);
+		return CustomResponse.badRequest<IReport>(res);
+	}
+};

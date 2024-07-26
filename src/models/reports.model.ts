@@ -21,8 +21,22 @@ class ReportManagement implements IReportManagement {
 	}
 
 	delete(reportId: string) {
-		console.log(reportId);
-		return null;
+		const report = this.get({ id: reportId });
+		if (!report) {
+			return null;
+		}
+
+		const dReportsSql = 'DELETE FROM reports WHERE id = @id';
+
+		try {
+			db.run(dReportsSql, {
+				id: reportId,
+			});
+
+			return reportId;
+		} catch {
+			return null;
+		}
 	}
 
 	all(): IReport[] {
